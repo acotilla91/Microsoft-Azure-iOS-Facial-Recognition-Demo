@@ -12,6 +12,8 @@
 		0CD0A82521239250009D0592 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0A82321239250009D0592 /* Main.storyboard */; };
 		0CD0A82721239252009D0592 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0A82621239252009D0592 /* Assets.xcassets */; };
 		0CD0A82A21239252009D0592 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0A82821239252009D0592 /* LaunchScreen.storyboard */; };
+		0CD0A83221239320009D0592 /* ImageCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0A83121239320009D0592 /* ImageCellView.swift */; };
+		0CD0A86D212393D6009D0592 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0A86C212393D6009D0592 /* Images */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		0CD0A82621239252009D0592 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CD0A82921239252009D0592 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0CD0A82B21239252009D0592 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0CD0A83121239320009D0592 /* ImageCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCellView.swift; sourceTree = "<group>"; };
+		0CD0A86C212393D6009D0592 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,10 +60,12 @@
 			children = (
 				0CD0A81F21239250009D0592 /* AppDelegate.swift */,
 				0CD0A82121239250009D0592 /* ViewController.swift */,
+				0CD0A83121239320009D0592 /* ImageCellView.swift */,
 				0CD0A82321239250009D0592 /* Main.storyboard */,
-				0CD0A82621239252009D0592 /* Assets.xcassets */,
 				0CD0A82821239252009D0592 /* LaunchScreen.storyboard */,
 				0CD0A82B21239252009D0592 /* Info.plist */,
+				0CD0A86C212393D6009D0592 /* Images */,
+				0CD0A82621239252009D0592 /* Assets.xcassets */,
 			);
 			path = "Azure iOS Facial Recognition";
 			sourceTree = "<group>";
@@ -122,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CD0A86D212393D6009D0592 /* Images in Resources */,
 				0CD0A82A21239252009D0592 /* LaunchScreen.storyboard in Resources */,
 				0CD0A82721239252009D0592 /* Assets.xcassets in Resources */,
 				0CD0A82521239250009D0592 /* Main.storyboard in Resources */,
@@ -135,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CD0A83221239320009D0592 /* ImageCellView.swift in Sources */,
 				0CD0A82221239250009D0592 /* ViewController.swift in Sources */,
 				0CD0A82021239250009D0592 /* AppDelegate.swift in Sources */,
 			);
