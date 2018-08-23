@@ -11,32 +11,24 @@ import UIKit
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let avatarsSection = 0
+    let photosSection = 1
     
-    var avatars: [UIImage]!
-    var photos: [UIImage]!
+    var persons: [Person] = []
+    var photos: [Photo] = []
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        avatars = loadImages(at: "/Images/Avatars")
-        photos = loadImages(at: "/Images/AllPhotos")
-    }
-    
-    func loadImages(at path: String) -> [UIImage] {
-        var images: [UIImage] = []
-        
-        let fullFolderPath = Bundle.main.resourcePath!.appending(path)
-        let imageNames = try! FileManager.default.contentsOfDirectory(atPath: fullFolderPath)
-        
-        for imageName in imageNames {
-            let imageUrl = fullFolderPath.appending("/\(imageName)")
-            let image = UIImage.init(contentsOfFile: imageUrl)!
-            images.append(image)
+        ContentManager.shared.load {
+            self.persons = ContentManager.shared.persons
+            self.photos = ContentManager.shared.photos
+            self.collectionView.reloadData()
+            
+            self.activityIndicator.stopAnimating()
         }
-        
-        return images
     }
     
     // Re-adjust collection view layout on device rotation
@@ -58,9 +50,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Avatar selected!")
-        
-        let selectedAvatar = avatars[indexPath.item]
+        print("Did select avatar!")
     }
     
     // MARK: UICollectionViewDataSource
@@ -72,7 +62,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == avatarsSection {
-            return avatars.count
+            return persons.count
         }
         
         return photos.count
@@ -82,7 +72,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ImageCellView
         
-        let image = indexPath.section == avatarsSection ? avatars[indexPath.item] : photos[indexPath.item]
+        let image = indexPath.section == avatarsSection ? persons[indexPath.item].avatar : photos[indexPath.item].image
         cell.imageView.image = image
         
         cell.type = indexPath.section == avatarsSection ? .round : .square
@@ -98,7 +88,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         var itemsPerRow = 3
         if indexPath.section == avatarsSection {
-            itemsPerRow = avatars.count
+            itemsPerRow = persons.count
         }
         
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
