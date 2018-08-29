@@ -17,7 +17,9 @@ class AzureFaceRecognition: NSObject {
 
     static let shared = AzureFaceRecognition()
     
-    // Must be called from a background thread
+    // See Face - Detect endpoint details
+    // https://westus.dev.cognitive.microsoft.com/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236
+    // @NOTE: This function must called from a background thread.
     func syncDetectFaceIds(imageData: Data) -> [String] {
         var headers: [String: String] = [:]
         headers["Content-Type"] = "application/octet-stream"
@@ -29,7 +31,7 @@ class AzureFaceRecognition: NSObject {
         return faceIds
     }
     
-    // See `findSimilars` endpoint details here:
+    // See Face - Find Similar endpoint details
     // https://westus.dev.cognitive.microsoft.com/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237
     func findSimilars(faceId: String, faceIds: [String], completion: @escaping ([String]) -> Void) {
         
