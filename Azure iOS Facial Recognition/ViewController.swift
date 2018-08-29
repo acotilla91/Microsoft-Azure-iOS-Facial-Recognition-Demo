@@ -50,7 +50,25 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Did select avatar!")
+        activityIndicator.startAnimating()
+        
+        let person = persons[indexPath.item]
+
+        // Clear photos section
+        self.photos = []
+        collectionView.reloadSections([photosSection])
+        
+        // Disable interactions while finding similar images
+        collectionView.isUserInteractionEnabled = false
+        
+        // Find photos that match the selected avatar
+        AzureFaceRecognition.shared.findSimilars(faceId: person.faceId, faceIds: ContentManager.shared.allPhotosFaceIds) { (faceIds) in
+            self.photos = ContentManager.shared.photos(withFaceIds: faceIds)
+            self.collectionView.reloadSections([self.photosSection])
+            self.collectionView.isUserInteractionEnabled = true
+            
+            self.activityIndicator.stopAnimating()
+        }
     }
     
     // MARK: UICollectionViewDataSource
