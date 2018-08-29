@@ -19,11 +19,19 @@ class Photo: NSObject {
 }
 
 class ContentManager: NSObject {
-
+    
     static let shared = ContentManager()
     
     private(set) var persons: [Person] = []
     private(set) var photos: [Photo] = []
+    
+    lazy var allPhotosFaceIds: [String] = {
+        var allFaceIds: [String] = []
+        for photo in photos {
+            allFaceIds.append(contentsOf: photo.faceIds)
+        }
+        return allFaceIds
+    }()
     
     func load(completion: @escaping () -> Void) {
         
@@ -34,16 +42,23 @@ class ContentManager: NSObject {
             
             // Create Persons
             for (avatarData, avatarImage) in zip(avatarDatas, avatarImages) {
-                let person = Person()
-                person.avatar = avatarImage
-                self.persons.append(person)
+                if let faceId = AzureFaceRecognition.shared.syncDetectFaceIds(imageData: avatarData).first {
+                    let person = Person()
+                    person.faceId = faceId
+                    person.avatar = avatarImage
+                    self.persons.append(person)
+                }
             }
             
             // Create Photos
             for (photoData, photoImage) in zip(photoDatas, photoImages) {
-                let photo = Photo()
-                photo.image = photoImage
-                self.photos.append(photo)
+                let faceIds = AzureFaceRecognition.shared.syncDetectFaceIds(imageData: photoData)
+                if !faceIds.isEmpty {
+                    let photo = Photo()
+                    photo.faceIds = faceIds
+                    photo.image = photoImage
+                    self.photos.append(photo)
+                }
             }
             
             DispatchQueue.main.async {
@@ -64,11 +79,26 @@ class ContentManager: NSObject {
             let imageUrl = fullFolderPath.appending("/\(imageName)")
             let data = try! Data.init(contentsOf: URL(fileURLWithPath: imageUrl))
             let image = UIImage.init(data: data, scale: UIScreen.main.scale)!
-
+            
             datas.append(data)
-            images.append(image)            
+            images.append(image)
         }
         
         return (datas, images)
     }
+    
+    func photos(withFaceIds faceIds: [String]) -> [Photo] {
+        var filteredPhotos: [Photo] = []
+        
+        let faceIdsSet = Set(faceIds)
+        for photo in photos {
+            let hasFaceIds = Set(photo.faceIds).intersection(faceIdsSet).isEmpty == false
+            if hasFaceIds {
+                filteredPhotos.append(photo)
+            }
+        }
+        
+        return filteredPhotos
+    }
+    
 }
